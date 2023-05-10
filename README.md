@@ -1,6 +1,6 @@
 # lab15-ksqldb-credittransactions
 
-This tutorial is based on the ksqlDb tutorial for event-driven microservices from [here](https://docs.ksqldb.io/en/latest/tutorials/event-driven-microservice/?_ga=2.238044992.1187389338.1650009400-892569557.1649877876).
+This tutorial is based on the ksqlDb tutorial for event-driven microservices from [here](https://docs.ksqldb.io/en/latest/tutorials/event-driven-microservice/?_ga=2.238044992.1187389338.1650009400-892569557.1649877876). If you want to test the tutorial on your machine then it is recommended that you copy the SQL commands directly from the tutorial's website.
 
 Imagine that you work at a financial services company which clears many credit card transactions each day. You want to prevent malicious activity in your customer base. When a high number of transactions occurs in a narrow window of time, you want to notify the cardholder of suspicious activity.
 
