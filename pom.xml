@@ -10,12 +10,12 @@
 
     <properties>
         <!-- Keep versions as properties to allow easy modification -->
-        <java.version>8</java.version>
+        <java.version>17</java.version>
         <confluent.version>7.1.0</confluent.version>
-        <kafka.version>3.1.0</kafka.version>
-        <avro.version>1.11.0</avro.version>
-        <slf4j.version>1.7.36</slf4j.version>
-        <sendgrid.version>4.9.1</sendgrid.version>
+        <kafka.version>3.7.0</kafka.version>
+        <avro.version>1.11.3</avro.version>
+        <slf4j.version>2.0.13</slf4j.version>
+        <sendgrid.version>4.10.2</sendgrid.version>
         <!-- Maven properties for compilation -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -55,7 +55,12 @@
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
         <dependency>
