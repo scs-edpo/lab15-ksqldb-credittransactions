@@ -76,6 +76,9 @@ public class EmailSender {
     }
 
     private static void sendEmail(PossibleAnomaly anomaly) throws IOException {
+
+        System.out.println(anomaly.toString());
+
         Email from = new Email(FROM_EMAIL);
         Email to = new Email(anomaly.getEmailAddress().toString());
         String subject = makeSubject(anomaly);

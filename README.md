@@ -2,7 +2,7 @@
 
 This tutorial is based on the ksqlDb tutorial for event-driven microservices from [here](https://docs.ksqldb.io/en/latest/tutorials/event-driven-microservice/?_ga=2.238044992.1187389338.1650009400-892569557.1649877876). If you want to test the tutorial on your machine then it is recommended that you copy the SQL commands directly from the tutorial's website.
 
-Imagine that you work at a financial services company which clears many credit card transactions each day. You want to prevent malicious activity in your customer base. When a high number of transactions occurs in a narrow window of time, you want to notify the cardholder of suspicious activity.
+Imagine that you work at a financial services company which clears many credit card transactions each day. You want to prevent malicious activity in your customer base. **When a high number of transactions occurs in a narrow window of time, you want to notify the cardholder of suspicious activity**.
 
 This tutorial shows how to create an event-driven microservice that identifies suspicious activity and notifies customers. It demonstrates finding anomalies with ksqlDB and sending alert emails using a simple Kafka consumer with SendGrid.
 
@@ -28,7 +28,7 @@ Before you issue more commands, tell ksqlDB to start all queries from the earlie
 SET 'auto.offset.reset' = 'earliest';
 ```
 
-We want to model a stream of credit card transactions from which we'll look for anomalous activity. To do that, create a ksqlDB stream to represent the transactions. Each transaction has a few key pieces of information, like the card number, amount, and email address that it's associated with. Because the specified topic (transactions) does not exist yet, ksqlDB creates it on your behalf.
+We want to **model a stream of credit card transactions** from which we'll look for **anomalous activity**. To do that, create a ksqlDB stream to represent the transactions. Each transaction has a few key pieces of information, like the card number, amount, and email address that it's associated with. Because the specified topic (transactions) does not exist yet, ksqlDB creates it on your behalf.
 
 ```roomsql
 CREATE STREAM transactions (
@@ -45,9 +45,9 @@ CREATE STREAM transactions (
     timestamp_format = 'yyyy-MM-dd''T''HH:mm:ss'
 );
 ```
-Notice that this stream is configured with a custom *timestamp* to signal that event-time should be used instead of processing-time. What this means is that when ksqlDB does time-related operations over the stream, it uses the timestamp column to measure time, not the current time of the operating system. This makes it possible to handle out-of-order events.
+Notice that this stream is configured with a **custom *timestamp*** to signal that event-time should be used instead of processing-time. What this means is that when ksqlDB does time-related operations over the stream, it uses the timestamp column to measure time, not the current time of the operating system. This makes it possible to handle out-of-order events.
 
-The stream is also configured to use the *Avro* format for the value part of the underlying Kafka records that it generates. Because ksqlDB has been configured with Schema Registry (as part of the Docker Compose file), the schemas of each stream and table are centrally tracked. We'll make use of this in our microservice later.
+The stream is also configured to use the ***Avro* format** for the value part of the underlying Kafka records that it generates. Because ksqlDB has been configured with Schema Registry (as part of the Docker Compose file), the schemas of each stream and table are centrally tracked. We'll make use of this in our **microservice** later.
 
 ### Seed some transaction events
 
@@ -171,16 +171,16 @@ CREATE TABLE possible_anomalies WITH (
 
 Here's what this statement does:
 
-* For each credit card number, 30 second tumbling windows are created to group activity. A new row is inserted into the table when at least 3 transactions take place inside a given window.
+* **For each credit card number**, **30 second tumbling windows are created** to group activity. A **new row is inserted into the table when at least 3 transactions take place inside a given window**.
 * The window retains data for the last 1000 days based on each row's timestamp. In general, you should choose your retention carefully. It is a trade-off between storing data longer and having larger state sizes. The very long retention period used in this tutorial is useful because the timestamps are fixed at the time of writing this and won't need to be adjusted often to account for retention.
 * The credit card number is selected twice. In the first instance, it becomes part of the underlying Kafka record key, because it's present in the `group by clause`, which is used for sharding. In the second instance, the `as_value` function is used to make it available in the value, too. This is generally for convenience.
-* The individual transaction IDs and amounts that make up the window are collected as lists.
-* The last transaction's email address is "carried forward" with `latest_by_offset`.
+* The **individual transaction IDs and amounts that make up the window are collected as lists**.
+* The **last transaction's email address is "carried forward" with `latest_by_offset`**.
 * Column aliases are surrounded by backticks, which tells ksqlDB to use exactly that case. ksqlDB uppercases identity names by default.
-*The underlying Kafka topic for this table is explicitly set to `possible_anomalies`.
+* **The underlying Kafka topic for this table is explicitly set to `possible_anomalies`**.
 * The Avro schema that ksqlDB generates for the value portion of its records is recorded under the namespace `io.ksqldb.tutorial.PossibleAnomaly`. You'll use this later in the microservice.
 
-Check what anomalies the table picked up. Run the following statement to select a stream of events emitted from the table:
+**Check what anomalies the table picked up. Run the following statement to select a stream of events emitted from the table:**
 
 ```roomsql
 SELECT * FROM possible_anomalies EMIT CHANGES;
